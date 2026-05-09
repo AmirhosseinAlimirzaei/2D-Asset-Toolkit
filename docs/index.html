@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Asset Toolkit — Handbook | LilyxGames</title>
+    <link rel="icon" href="../images/logo.png">
+
+    <style>
+        :root {
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary:      #0d1117;
+            --bg-secondary:    #161b22;
+            --bg-card:         #1c2128;
+            --bg-card-hover:   #21262d;
+            --bg-code:         #010409;
+            --bg-hero:         linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1a2e 100%);
+            --border:          #30363d;
+            --border-light:    #21262d;
+            --text-primary:    #e6edf3;
+            --text-secondary:  #c9d1d9;
+            --text-dim:        #8b949e;
+            --text-muted:      #6e7681;
+            --accent-blue:     #58a6ff;
+            --accent-green:    #3fb950;
+            --accent-orange:   #f0883e;
+            --accent-red:      #f85149;
+            --accent-purple:   #bc8cff;
+            --accent-yellow:   #e3b341;
+            --accent-cyan:     #39d2c0;
+            --shadow-sm:       0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md:       0 4px 16px rgba(0,0,0,0.5);
+            --shadow-lg:       0 8px 32px rgba(0,0,0,0.6);
+            --shadow-glow:     0 0 30px rgba(88,166,255,0.15);
+            --gradient-card:   linear-gradient(145deg, #1c2128, #161b22);
+            --scrollbar-track: #161b22;
+            --scrollbar-thumb: #30363d;
+            --checker-light:   #2a2a3a;
+            --checker-dark:    #222233;
+        }
+
+        [data-theme="light"] {
+            --bg-primary:      #ffffff;
+            --bg-secondary:    #f6f8fa;
+            --bg-card:         #ffffff;
+            --bg-card-hover:   #f3f4f6;
+            --bg-code:         #f0f2f5;
+            --bg-hero:         linear-gradient(135deg, #f6f8fa 0%, #e8ecf1 50%, #dfe6ed 100%);
+            --border:          #d0d7de;
+            --border-light:    #e1e4e8;
+            --text-primary:    #1f2328;
+            --text-secondary:  #424a53;
+            --text-dim:        #656d76;
+            --text-muted:      #8b949e;
+            --accent-blue:     #0969da;
+            --accent-green:    #1a7f37;
+            --accent-orange:   #bc4c00;
+            --accent-red:      #cf222e;
+            --accent-purple:   #8250df;
+            --accent-yellow:   #9a6700;
+            --accent-cyan:     #0d7377;
+            --shadow-sm:       0 1px 3px rgba(31,35,40,0.08);
+            --shadow-md:       0 4px 16px rgba(31,35,40,0.12);
+            --shadow-lg:       0 8px 32px rgba(31,35,40,0.16);
+            --shadow-glow:     0 0 30px rgba(9,105,218,0.08);
+            --gradient-card:   linear-gradient(145deg, #ffffff, #f6f8fa);
+            --scrollbar-track: #f0f2f5;
+            --scrollbar-thumb: #c1c8cf;
+            --checker-light:   #f0f0f0;
+            --checker-dark:    #e0e0e0;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary); color: var(--text-secondary); line-height: 1.7;
+            transition: background var(--transition-speed), color var(--transition-speed);
+        }
+        ::selection { background: var(--accent-blue); color: white; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
+        img { max-width: 100%; height: auto; }
+        a { color: var(--accent-blue); text-decoration: none; transition: color 0.2s, opacity 0.2s; }
+        a:hover { opacity: 0.85; text-decoration: underline; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            transition: background var(--transition-speed), border-color var(--transition-speed);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 700; font-size: 1.1rem; color: var(--text-primary); text-decoration: none;
+        }
+        .nav-brand:hover { text-decoration: none; opacity: 1; }
+        .nav-logo-img {
+            width: 36px; height: 36px; border-radius: 8px; object-fit: cover;
+            box-shadow: 0 2px 8px rgba(240,136,62,0.3);
+        }
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+        .nav-links a {
+            padding: 6px 14px; border-radius: 6px; font-size: 0.88rem;
+            font-weight: 500; color: var(--text-dim); transition: all 0.2s;
+        }
+        .nav-links a:hover { background: var(--bg-card-hover); color: var(--text-primary); text-decoration: none; }
+        .theme-toggle {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 50%;
+            width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.1rem; transition: all 0.3s; color: var(--text-dim);
+        }
+        .theme-toggle:hover { border-color: var(--accent-blue); color: var(--accent-yellow); transform: rotate(30deg); }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+        .nav-hamburger span {
+            display: block; width: 24px; height: 2px; background: var(--text-secondary);
+            margin: 5px 0; border-radius: 2px; transition: all 0.3s;
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            background: var(--bg-hero); padding: 120px 24px 60px;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(88,166,255,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(240,136,62,0.05) 0%, transparent 60%);
+            animation: heroGlow 12s ease-in-out infinite alternate;
+        }
+        @keyframes heroGlow {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-3%, 2%) scale(1.05); }
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 850px; margin: 0 auto; }
+        .hero-logo {
+            width: 72px; height: 72px; border-radius: 18px; object-fit: cover;
+            margin-bottom: 18px; box-shadow: 0 4px 20px rgba(240,136,62,0.35);
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 999px; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 20px;
+        }
+        .hero-badge .version { color: var(--accent-green); font-weight: 700; }
+        .hero h1 {
+            font-size: 3.2rem; font-weight: 800; color: var(--text-primary);
+            line-height: 1.15; margin-bottom: 14px; letter-spacing: -0.02em;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem; color: var(--text-dim); max-width: 600px;
+            margin: 0 auto 28px; line-height: 1.7;
+        }
+        .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        /* ============================================
+           FLOW SHOWCASE (Before → Toolkit → After)
+           ============================================ */
+        .flow-showcase {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 56px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+
+        /* Left: Before image */
+        .flow-before,
+        .flow-after {
+            flex: 0 0 280px;
+            position: relative;
+        }
+
+        .flow-image-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.4s, box-shadow 0.4s;
+            position: relative;
+        }
+        .flow-image-card:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-glow), var(--shadow-lg);
+        }
+
+        .flow-before .flow-image-card {
+            background: var(--bg-card);
+        }
+        .flow-before .flow-image-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        /* Right: After image — checkerboard background */
+        .flow-after .flow-image-card {
+            background-image:
+                linear-gradient(45deg, var(--checker-light) 25%, transparent 25%),
+                linear-gradient(-45deg, var(--checker-light) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--checker-light) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--checker-light) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+            background-color: var(--checker-dark);
+        }
+        .flow-after .flow-image-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+        }
+
+        /* Labels under images */
+        .flow-label {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .flow-before .flow-label { color: var(--accent-red); }
+        .flow-after .flow-label  { color: var(--accent-green); }
+
+        .flow-label-sub {
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-top: 2px;
+        }
+
+        /* Center: Toolkit branding + arrows */
+        .flow-center {
+            flex: 0 0 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .flow-arrow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Animated arrows */
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .flow-arrow-line {
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-blue));
+            border-radius: 2px;
+            position: relative;
+        }
+        .flow-arrow-line::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: inherit;
+            animation: arrowPulse 2s ease-in-out infinite;
+            opacity: 0;
+        }
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0; transform: scaleX(1); }
+            50%      { opacity: 0.5; transform: scaleX(1.2); }
+        }
+
+        .flow-arrow-head {
+            width: 0; height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid var(--accent-blue);
+        }
+        .flow-arrow-left .flow-arrow-head {
+            border-left-color: var(--accent-orange);
+            transform: rotate(180deg);
+            order: -1;
+        }
+        .flow-arrow-left .flow-arrow-line {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+        }
+
+        /* Center card */
+        .flow-toolkit-card {
+            background: var(--gradient-card);
+            border: 2px solid var(--accent-orange);
+            border-radius: 20px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(240,136,62,0.15),
+                        var(--shadow-lg);
+            margin: 16px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-width: 170px;
+        }
+        .flow-toolkit-card:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 60px rgba(240,136,62,0.25), var(--shadow-lg);
+        }
+
+        .flow-toolkit-logo {
+            width: 52px; height: 52px; border-radius: 14px; object-fit: cover;
+            margin: 0 auto 10px; display: block;
+            box-shadow: 0 3px 12px rgba(240,136,62,0.3);
+        }
+
+        .flow-toolkit-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        .flow-toolkit-title .flow-highlight {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .flow-toolkit-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        .flow-toolkit-tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-code);
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        /* Animated dots on the arrow lines */
+        .flow-dot-track {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            transform: translateY(-50%);
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .flow-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            top: -2.5px;
+            animation: dotMove 2.5s linear infinite;
+        }
+        .flow-dot-left {
+            background: var(--accent-orange);
+            animation: dotMoveRight 2.5s linear infinite;
+        }
+        .flow-dot-right {
+            right: 0;
+            background: var(--accent-green);
+            animation: dotMoveLeft 2.5s linear infinite;
+        }
+
+        @keyframes dotMoveRight {
+            0%   { left: -8px; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { left: calc(100% + 8px); opacity: 0; }
+        }
+        @keyframes dotMoveLeft {
+            0%   { right: -8px; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { right: calc(100% + 8px); opacity: 0; }
+        }
+
+        /* Connection lines */
+        .flow-connection {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 60px;
+            height: 3px;
+            flex-shrink: 0;
+        }
+        .flow-connection-line {
+            width: 100%;
+            height: 2px;
+            border-radius: 1px;
+        }
+        .flow-connection-left .flow-connection-line {
+            background: linear-gradient(90deg, transparent, var(--accent-orange));
+        }
+        .flow-connection-right .flow-connection-line {
+            background: linear-gradient(90deg, var(--accent-green), transparent);
+        }
+        .flow-connection .flow-dot-track {
+            height: 2px;
+        }
+
+        /* Overall flow label */
+        .flow-title {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .flow-title-text {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 18px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--bg-card);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 28px; border-radius: 8px; font-size: 0.95rem;
+            font-weight: 600; cursor: pointer; border: none; transition: all 0.25s; text-decoration: none;
+        }
+        .btn:hover { text-decoration: none; transform: translateY(-2px); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #e67e22);
+            color: white; box-shadow: 0 4px 16px rgba(240,136,62,0.35);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 24px rgba(240,136,62,0.5); color: white; }
+        .btn-secondary { background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: var(--shadow-md); }
+        .btn-download {
+            background: linear-gradient(135deg, var(--accent-green), #15803d);
+            color: white; box-shadow: 0 4px 16px rgba(63,185,80,0.3);
+        }
+        .btn-download:hover { box-shadow: 0 6px 24px rgba(63,185,80,0.45); color: white; }
+
+        /* ============================================
+           HERO SCREENSHOT
+           ============================================ */
+        .hero-screenshot-section {
+            max-width: 900px;
+            margin: 56px auto 0;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-screenshot {
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .hero-screenshot:hover { transform: scale(1.01); box-shadow: var(--shadow-glow), var(--shadow-lg); }
+        .hero-screenshot img { display: block; width: 100%; }
+
+        /* ============================================
+           FEATURES OVERVIEW
+           ============================================ */
+        .features-overview { padding: 80px 24px 40px; max-width: 1200px; margin: 0 auto; }
+        .section-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent-blue); margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 2.2rem; font-weight: 800; color: var(--text-primary);
+            margin-bottom: 8px; letter-spacing: -0.01em;
+        }
+        .section-desc { font-size: 1.05rem; color: var(--text-dim); max-width: 650px; margin-bottom: 40px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .feature-card {
+            background: var(--gradient-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 28px 24px; transition: all 0.3s;
+            cursor: default; position: relative; overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--card-accent, var(--accent-blue)); opacity: 0; transition: opacity 0.3s;
+        }
+        .feature-card:hover {
+            border-color: var(--card-accent, var(--accent-blue));
+            transform: translateY(-4px); box-shadow: var(--shadow-lg);
+        }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-icon { font-size: 2rem; margin-bottom: 14px; display: inline-block; }
+        .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+        .feature-card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
+        .feature-card .feature-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 12px; font-size: 0.85rem; font-weight: 600;
+            color: var(--card-accent, var(--accent-blue));
+        }
+        .feature-card .feature-link:hover { text-decoration: none; gap: 8px; }
+
+        /* ============================================
+           DETAIL SECTIONS
+           ============================================ */
+        .detail-section { padding: 80px 24px; border-top: 1px solid var(--border-light); }
+        .detail-section:nth-child(even) { background: var(--bg-secondary); }
+        .detail-inner { max-width: 1100px; margin: 0 auto; }
+        .detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+        .detail-layout.reverse { direction: rtl; }
+        .detail-layout.reverse > * { direction: ltr; }
+        .detail-text .section-label { margin-bottom: 10px; }
+        .detail-text h2 {
+            font-size: 1.9rem; font-weight: 800; color: var(--text-primary);
+            margin-bottom: 14px; line-height: 1.25;
+        }
+        .detail-text > p { color: var(--text-dim); margin-bottom: 20px; font-size: 1rem; line-height: 1.75; }
+        .detail-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .detail-features li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 0.92rem; color: var(--text-secondary);
+        }
+        .detail-features li .check { color: var(--accent-green); font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+        .detail-image-wrap {
+            border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg); background: var(--bg-card);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .detail-image-wrap:hover { transform: scale(1.02); box-shadow: var(--shadow-glow), var(--shadow-lg); }
+        .detail-image-wrap img { display: block; width: 100%; }
+
+        /* ============================================
+           MODELS SECTION
+           ============================================ */
+        .models-section { padding: 80px 24px; border-top: 1px solid var(--border-light); background: var(--bg-secondary); }
+        .models-inner { max-width: 1100px; margin: 0 auto; }
+        .models-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 32px; }
+        .model-card {
+            background: var(--gradient-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; transition: all 0.3s; position: relative;
+        }
+        .model-card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .model-card.recommended { border-color: var(--accent-green); }
+        .model-card.recommended::after {
+            content: '★ Recommended'; position: absolute; top: 12px; right: 12px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; padding: 3px 8px; border-radius: 4px;
+            background: var(--accent-green); color: white;
+        }
+        .model-card .model-icon { font-size: 1.6rem; margin-bottom: 12px; display: inline-block; }
+        .model-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .model-card .model-id {
+            font-family: 'Consolas', 'Courier New', monospace; font-size: 0.82rem;
+            color: var(--accent-purple); margin-bottom: 10px; display: block;
+        }
+        .model-card p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 14px; }
+        .model-card .model-meta { display: flex; gap: 16px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px; }
+        .model-card .model-meta span { display: flex; align-items: center; gap: 4px; }
+        .model-card .btn { width: 100%; justify-content: center; padding: 10px 20px; font-size: 0.88rem; }
+        .model-note {
+            margin-top: 24px; padding: 16px 20px; background: var(--bg-card);
+            border: 1px solid var(--border); border-left: 3px solid var(--accent-yellow);
+            border-radius: 8px; font-size: 0.9rem; color: var(--text-dim); line-height: 1.7;
+        }
+        .model-note strong { color: var(--accent-yellow); }
+        .install-path {
+            display: inline-block; padding: 3px 10px; background: var(--bg-code);
+            border: 1px solid var(--border); border-radius: 4px;
+            font-family: 'Consolas', monospace; font-size: 0.85rem;
+            color: var(--accent-orange); margin: 4px 0; word-break: break-all;
+        }
+
+        /* ============================================
+           INSTALL GUIDE
+           ============================================ */
+        .install-section { padding: 80px 24px; border-top: 1px solid var(--border-light); }
+        .install-inner { max-width: 900px; margin: 0 auto; }
+        .step-list { display: flex; flex-direction: column; gap: 24px; margin-top: 32px; }
+        .step-card {
+            display: flex; gap: 20px; padding: 24px;
+            background: var(--gradient-card); border: 1px solid var(--border);
+            border-radius: 12px; transition: all 0.3s;
+        }
+        .step-card:hover { border-color: var(--accent-blue); box-shadow: var(--shadow-md); }
+        .step-number {
+            flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%;
+            background: var(--accent-blue); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.1rem;
+        }
+        .step-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+        .step-content p { font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; }
+        .code-block {
+            display: block; margin: 10px 0; padding: 12px 16px;
+            background: var(--bg-code); border: 1px solid var(--border);
+            border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.88rem; color: var(--accent-green); overflow-x: auto;
+            white-space: pre; line-height: 1.6;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 48px 24px 32px; border-top: 1px solid var(--border);
+            background: var(--bg-secondary); text-align: center;
+        }
+        .footer-brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .footer-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
+        .footer-brand-text { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+        .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { font-size: 0.88rem; color: var(--text-dim); }
+        .footer-links a:hover { color: var(--accent-blue); }
+        .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+
+        /* BACK TO TOP */
+        .back-to-top {
+            position: fixed; bottom: 28px; right: 28px; z-index: 999;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--accent-blue); color: white; border: none; cursor: pointer;
+            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-md); opacity: 0; visibility: hidden;
+            transform: translateY(10px); transition: all 0.3s;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-orange); transform: translateY(-3px); }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 900px) {
+            .detail-layout, .detail-layout.reverse { grid-template-columns: 1fr; gap: 28px; direction: ltr; }
+            .hero h1 { font-size: 2.3rem; }
+            .section-title { font-size: 1.7rem; }
+            .flow-showcase { flex-direction: column; gap: 12px; }
+            .flow-before, .flow-after { flex: 0 0 auto; width: 220px; }
+            .flow-center { flex: 0 0 auto; }
+            .flow-connection { width: 3px; height: 40px; flex-direction: column; }
+            .flow-connection-line { width: 2px !important; height: 100% !important; }
+            .flow-connection-left .flow-connection-line {
+                background: linear-gradient(180deg, transparent, var(--accent-orange)) !important;
+            }
+            .flow-connection-right .flow-connection-line {
+                background: linear-gradient(180deg, var(--accent-green), transparent) !important;
+            }
+            .flow-dot-track { display: none; }
+        }
+        @media (max-width: 700px) {
+            .nav-links {
+                display: none; position: absolute; top: 64px; left: 0; right: 0;
+                background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+                flex-direction: column; padding: 12px 16px;
+            }
+            .nav-links.open { display: flex; }
+            .nav-hamburger { display: block; }
+            .hero { padding: 100px 20px 50px; }
+            .hero h1 { font-size: 1.9rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .features-grid { grid-template-columns: 1fr; }
+            .models-grid { grid-template-columns: 1fr; }
+            .flow-before, .flow-after { width: 180px; }
+            .flow-toolkit-card { min-width: 140px; padding: 14px 10px; }
+            .flow-toolkit-title { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <img src="../images/logo.png" alt="LilyxGames" class="nav-logo-img">
+                <span>2D Asset Toolkit</span>
+            </a>
+            <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#explorer">Explorer</a></li>
+                <li><a href="#trimmer">Trimmer</a></li>
+                <li><a href="#resizer">Resizer</a></li>
+                <li><a href="#bg-remover">BG Remover</a></li>
+                <li><a href="#models">Models</a></li>
+                <li><a href="#install">Install</a></li>
+                <li><button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>⚒️</span>
+                <span>LilyxGames Studio</span>
+                <span class="version">v1.0.0</span>
+            </div>
+
+            <h1><span class="highlight">2D Asset</span> Toolkit</h1>
+
+            <p class="hero-subtitle">
+                A powerful desktop app for 2D game artists — browse, trim, resize
+                and remove backgrounds from your sprites and assets, all in one place.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit" class="btn btn-primary" target="_blank">⬇ Download from GitHub</a>
+                <a href="#features" class="btn btn-secondary">📖 Read the Handbook</a>
+                <a href="#models" class="btn btn-download">🧠 Download AI Models</a>
+            </div>
+        </div>
+
+        <!-- ============================================
+             FLOW SHOWCASE: Before → Toolkit → After
+             ============================================ -->
+        <div class="flow-title">
+            <span class="flow-title-text">✨ See it in action</span>
+        </div>
+
+        <div class="flow-showcase">
+
+            <!-- LEFT: Before (with background) -->
+            <div class="flow-before">
+                <div class="flow-image-card">
+                    <img src="../images/before.png" alt="Character with background">
+                </div>
+                <div class="flow-label">
+                    ❌ Before
+                    <div class="flow-label-sub">With background</div>
+                </div>
+            </div>
+
+            <!-- Connection line: Left → Center -->
+            <div class="flow-connection flow-connection-left">
+                <div class="flow-connection-line"></div>
+                <div class="flow-dot-track">
+                    <div class="flow-dot flow-dot-left"></div>
+                    <div class="flow-dot flow-dot-left" style="animation-delay: 1.2s;"></div>
+                </div>
+            </div>
+
+            <!-- CENTER: Toolkit -->
+            <div class="flow-center">
+                <div class="flow-toolkit-card">
+                    <img src="../images/logo.png" alt="2D Asset Toolkit" class="flow-toolkit-logo">
+                    <div class="flow-toolkit-title">
+                        <span class="flow-highlight">2D Asset</span> Toolkit
+                    </div>
+                    <div class="flow-toolkit-features">
+                        <span class="flow-toolkit-tag">✂️ Trim</span>
+                        <span class="flow-toolkit-tag">📐 Resize</span>
+                        <span class="flow-toolkit-tag">🧠 BG Remove</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection line: Center → Right -->
+            <div class="flow-connection flow-connection-right">
+                <div class="flow-connection-line"></div>
+                <div class="flow-dot-track">
+                    <div class="flow-dot flow-dot-right"></div>
+                    <div class="flow-dot flow-dot-right" style="animation-delay: 1.2s;"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT: After (no background, checkerboard) -->
+            <div class="flow-after">
+                <div class="flow-image-card">
+                    <img src="../images/after.png" alt="Character without background">
+                </div>
+                <div class="flow-label">
+                    ✅ After
+                    <div class="flow-label-sub">Background removed</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- App screenshot below the flow -->
+        <div class="hero-screenshot-section">
+            <div class="hero-screenshot">
+                <img src="../images/explorer.png" alt="2D Asset Toolkit — App Preview">
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         FEATURES OVERVIEW
+         ============================================ -->
+    <section class="features-overview" id="features">
+        <div class="section-label">⚡ Feature Overview</div>
+        <h2 class="section-title">Everything you need for 2D assets</h2>
+        <p class="section-desc">Five integrated tools in a single dark-themed desktop app. No cloud, no subscriptions — runs entirely on your machine.</p>
+        <div class="features-grid">
+            <div class="feature-card" style="--card-accent: var(--accent-blue);">
+                <div class="feature-icon">📂</div>
+                <h3>File Explorer</h3>
+                <p>Browse folders, preview images with resolution & size info, sort by name/size/resolution. Three view modes.</p>
+                <a href="#explorer" class="feature-link">Learn more →</a>
+            </div>
+            <div class="feature-card" style="--card-accent: var(--accent-green);">
+                <div class="feature-icon">✂️</div>
+                <h3>Smart Trimmer</h3>
+                <p>Automatically trim transparent and color borders from sprites. Configurable alpha, fuzz, and padding.</p>
+                <a href="#trimmer" class="feature-link">Learn more →</a>
+            </div>
+            <div class="feature-card" style="--card-accent: var(--accent-purple);">
+                <div class="feature-icon">📐</div>
+                <h3>Image Resizer</h3>
+                <p>Batch-resize with 7 modes, size presets, multiple formats, and resampling filters from LANCZOS to NEAREST.</p>
+                <a href="#resizer" class="feature-link">Learn more →</a>
+            </div>
+            <div class="feature-card" style="--card-accent: var(--accent-cyan);">
+                <div class="feature-icon">🧠</div>
+                <h3>Background Remover</h3>
+                <p>AI-powered background removal with 7 ONNX models. Alpha matting and auto-trim support.</p>
+                <a href="#bg-remover" class="feature-link">Learn more →</a>
+            </div>
+            <div class="feature-card" style="--card-accent: var(--accent-orange);">
+                <div class="feature-icon">⚙️</div>
+                <h3>Install Manager</h3>
+                <p>One-click installation of rembg and AI model weights. Opens a real CMD window for download progress.</p>
+                <a href="#install-tab" class="feature-link">Learn more →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL: EXPLORER -->
+    <section class="detail-section" id="explorer">
+        <div class="detail-inner">
+            <div class="detail-layout">
+                <div class="detail-text">
+                    <div class="section-label" style="color: var(--accent-blue);">📂 Tab 1</div>
+                    <h2>File Explorer</h2>
+                    <p>A built-in file browser designed for image assets. Drag & drop a folder to open it, then browse, sort, and preview without leaving the app.</p>
+                    <ul class="detail-features">
+                        <li><span class="check">✓</span> Drag & drop folders or click to browse</li>
+                        <li><span class="check">✓</span> Three view modes: Details, Medium thumbnails, Large thumbnails</li>
+                        <li><span class="check">✓</span> Sort by name, file size (↑↓), or resolution (↑↓)</li>
+                        <li><span class="check">✓</span> Live image preview panel with auto-scaling</li>
+                        <li><span class="check">✓</span> Shows file size, type, and resolution at a glance</li>
+                        <li><span class="check">✓</span> Navigate with Back / Up buttons and breadcrumb path</li>
+                        <li><span class="check">✓</span> Supports PNG, JPG, JPEG, and WebP</li>
+                    </ul>
+                </div>
+                <div class="detail-image-wrap">
+                    <img src="../images/explorer.png" alt="File Explorer" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL: TRIMMER -->
+    <section class="detail-section" id="trimmer">
+        <div class="detail-inner">
+            <div class="detail-layout reverse">
+                <div class="detail-text">
+                    <div class="section-label" style="color: var(--accent-green);">✂️ Tab 2</div>
+                    <h2>Smart Image Trimmer</h2>
+                    <p>Automatically crop away transparent borders and optionally remove solid-color backgrounds. Perfect for cleaning up exported sprites and icons.</p>
+                    <ul class="detail-features">
+                        <li><span class="check">✓</span> <strong>Alpha Threshold</strong> — transparency detection aggressiveness (0–254)</li>
+                        <li><span class="check">✓</span> <strong>Color Trim</strong> — remove pixels matching a target color</li>
+                        <li><span class="check">✓</span> <strong>Fuzz Tolerance</strong> — how close a color must be to get trimmed (0–255)</li>
+                        <li><span class="check">✓</span> <strong>Padding</strong> — add pixels back so edges aren't clipped</li>
+                        <li><span class="check">✓</span> Batch process folders recursively</li>
+                        <li><span class="check">✓</span> Overwrite originals or save to <code>trimmed/</code> subfolder</li>
+                        <li><span class="check">✓</span> Real-time log with before/after dimensions</li>
+                    </ul>
+                </div>
+                <div class="detail-image-wrap">
+                    <img src="../images/trimmer.png" alt="Smart Trimmer" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL: RESIZER -->
+    <section class="detail-section" id="resizer">
+        <div class="detail-inner">
+            <div class="detail-layout">
+                <div class="detail-text">
+                    <div class="section-label" style="color: var(--accent-purple);">📐 Tab 3</div>
+                    <h2>Image Resizer</h2>
+                    <p>Batch-resize all your images to a consistent size while preserving aspect ratio. Seven modes cover every use case.</p>
+                    <ul class="detail-features">
+                        <li><span class="check">✓</span> <strong>Fit (no upscale)</strong> — shrink to fit a box, never enlarge</li>
+                        <li><span class="check">✓</span> <strong>Fit + Upscale</strong> — also scales up small images</li>
+                        <li><span class="check">✓</span> <strong>Exact Canvas</strong> — center on a transparent W×H canvas</li>
+                        <li><span class="check">✓</span> <strong>Long Edge / Short Edge</strong> — scale based on one dimension</li>
+                        <li><span class="check">✓</span> <strong>Width Only / Height Only</strong> — lock one axis</li>
+                        <li><span class="check">✓</span> Presets: 128², 256², 512², 1024², 2048², 1920×1080, 1280×720</li>
+                        <li><span class="check">✓</span> Output as PNG, JPEG, WebP or keep original format</li>
+                        <li><span class="check">✓</span> Filters: LANCZOS, BICUBIC, BILINEAR, NEAREST (pixel art)</li>
+                    </ul>
+                </div>
+                <div class="detail-image-wrap">
+                    <img src="../images/resizer.png" alt="Image Resizer" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL: BG REMOVER -->
+    <section class="detail-section" id="bg-remover">
+        <div class="detail-inner">
+            <div class="detail-layout reverse">
+                <div class="detail-text">
+                    <div class="section-label" style="color: var(--accent-cyan);">🧠 Tab 4</div>
+                    <h2>Background Remover</h2>
+                    <p>Remove backgrounds from any image using AI. Powered by <a href="https://github.com/danielgatis/rembg" target="_blank">rembg</a> with 7 ONNX models.</p>
+                    <ul class="detail-features">
+                        <li><span class="check">✓</span> 7 AI models — general, anime, human, clothing, and more</li>
+                        <li><span class="check">✓</span> Live status indicators for installed models</li>
+                        <li><span class="check">✓</span> <strong>Alpha Matting</strong> for cleaner edges (slower but better)</li>
+                        <li><span class="check">✓</span> <strong>Auto-trim</strong> after removal using smart trim</li>
+                        <li><span class="check">✓</span> Batch process folders with recursive support</li>
+                        <li><span class="check">✓</span> Output organized into model-named subfolders</li>
+                        <li><span class="check">✓</span> Progress bar and detailed per-file log</li>
+                    </ul>
+                </div>
+                <div class="detail-image-wrap">
+                    <img src="../images/bg_remover.png" alt="Background Remover" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL: INSTALL TAB -->
+    <section class="detail-section" id="install-tab">
+        <div class="detail-inner">
+            <div class="detail-layout">
+                <div class="detail-text">
+                    <div class="section-label" style="color: var(--accent-orange);">⚙️ Tab 5</div>
+                    <h2>Install Manager</h2>
+                    <p>Manage rembg installation and AI model downloads from within the app. Each action opens a real terminal window.</p>
+                    <ul class="detail-features">
+                        <li><span class="check">✓</span> One-click rembg installation via pip</li>
+                        <li><span class="check">✓</span> Per-model install buttons that open CMD/Terminal</li>
+                        <li><span class="check">✓</span> Real-time status: ✅ installed, ❌ missing, ⏳ checking</li>
+                        <li><span class="check">✓</span> Refresh button to re-scan all model statuses</li>
+                        <li><span class="check">✓</span> Shows Python path, model folder, platform info</li>
+                        <li><span class="check">✓</span> Quick button to open model folder in file manager</li>
+                        <li><span class="check">✓</span> Cross-platform: Windows, macOS, Linux</li>
+                    </ul>
+                </div>
+                <div class="detail-image-wrap">
+                    <img src="../images/install.png" alt="Install Manager" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI MODEL DOWNLOADS -->
+    <section class="models-section" id="models">
+        <div class="models-inner">
+            <div class="section-label">🧠 AI Model Downloads</div>
+            <h2 class="section-title">Download Pre-trained Models</h2>
+            <p class="section-desc">Download the ONNX model files directly and place them in your model folder. These are the four primary models — additional models can be installed from the app.</p>
+
+            <div class="model-note">
+                <strong>📁 Install Location:</strong> After downloading, place the <code>.onnx</code> file in:<br>
+                <span class="install-path">Windows:  C:\Users\YourName\.u2net\</span><br>
+                <span class="install-path">macOS/Linux:  ~/.u2net/</span><br><br>
+                Or use the <strong>⚙️ Install tab</strong> inside the app to download automatically.
+            </div>
+
+            <div class="models-grid">
+                <div class="model-card recommended">
+                    <div class="model-icon">🚀</div>
+                    <h3>High Precision</h3>
+                    <span class="model-id">isnet-general-use</span>
+                    <p>Best overall quality for general-purpose background removal. Works great with complex edges and fine details.</p>
+                    <div class="model-meta"><span>📦 ~170 MB</span><span>🎯 Highest accuracy</span></div>
+                    <a href="https://drive.google.com/file/d/1_pmpnCaXsMl9hvSwiD0RmylqxsdPqXID/view?usp=sharing" class="btn btn-download" target="_blank">⬇ Download isnet-general-use.onnx</a>
+                </div>
+                <div class="model-card">
+                    <div class="model-icon">💨</div>
+                    <h3>Lite / Fast</h3>
+                    <span class="model-id">u2netp</span>
+                    <p>Lightweight version. Much faster with slightly lower quality. Great for large batches or previewing.</p>
+                    <div class="model-meta"><span>📦 ~4 MB</span><span>⚡ Fastest</span></div>
+                    <a href="https://drive.google.com/file/d/1T4rytYwsAXy8MYIMhA2II6CUDjYk1Ojr/view?usp=sharing" class="btn btn-download" target="_blank">⬇ Download u2netp.onnx</a>
+                </div>
+            </div>
+
+            <div class="model-note" style="margin-top: 28px;">
+                <strong>ℹ️ Additional Models:</strong> Three more models can be installed from the app's <strong>⚙️ Install tab</strong>:
+                <ul style="margin-top: 8px; padding-left: 20px; line-height: 2;">
+                    <li><code>isnet-anime</code> — Optimized for anime & cartoon art</li>
+                    <li><code>silueta</code> — Silhouette-focused segmentation</li>
+                    <li><code>u2net_cloth_seg</code> — Clothing-only segmentation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTALL GUIDE -->
+    <section class="install-section" id="install">
+        <div class="install-inner">
+            <div class="section-label">📥 Getting Started</div>
+            <h2 class="section-title">Installation Guide</h2>
+            <p class="section-desc">Get up and running in under 5 minutes.</p>
+            <div class="step-list">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Install Python 3.8+</h3>
+                        <p>Download from <a href="https://www.python.org/downloads/" target="_blank">python.org</a>. Check <strong>"Add Python to PATH"</strong>.</p>
+                        <code class="code-block">python --version</code>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Install Required Packages</h3>
+                        <p>Open a terminal and install dependencies:</p>
+                        <code class="code-block">pip install Pillow numpy</code>
+                        <p style="margin-top:8px;">Optional — for drag & drop support:</p>
+                        <code class="code-block">pip install tkinterdnd2</code>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Download the App</h3>
+                        <p>Clone or download from GitHub:</p>
+                        <code class="code-block">git clone https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit.git
+cd 2d-asset-toolkit</code>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Run the App</h3>
+                        <code class="code-block">python toolkit.py</code>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Install rembg & AI Models (Optional)</h3>
+                        <p>For Background Remover, go to the <strong>⚙️ Install tab</strong> inside the app, or manually:</p>
+                        <code class="code-block">pip install "rembg[cpu,cli]"</code>
+                        <p style="margin-top:8px;">Then download models from the <a href="#models">Models section</a> above.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-brand">
+            <img src="../images/logo.png" alt="LilyxGames" class="footer-logo-img">
+            <span class="footer-brand-text">LilyxGames Studio</span>
+        </div>
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#models">Models</a>
+            <a href="#install">Install Guide</a>
+            <a href="https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit" target="_blank">GitHub</a>
+        </div>
+        <p class="footer-copy">
+            © 2026 LilyxGames Studio. 2D Asset Toolkit v1.0.0 — Open Source.
+            <br>Built with ❤️ for 2D game developers and artists.
+        </p>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+    <script>
+        // Theme toggle
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        const saved = localStorage.getItem('theme');
+        if (saved) { html.setAttribute('data-theme', saved); themeBtn.textContent = saved === 'dark' ? '🌙' : '☀️'; }
+        themeBtn.addEventListener('click', () => {
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+        });
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+        navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+
+        // Back to top + navbar shadow
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 400);
+            document.getElementById('navbar').style.boxShadow = window.scrollY > 10 ? 'var(--shadow-md)' : 'none';
+        });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll(
+            '.feature-card, .detail-layout > *, .step-card, .model-card, .flow-before, .flow-center, .flow-after'
+        ).forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
