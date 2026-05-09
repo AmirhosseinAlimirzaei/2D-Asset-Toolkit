@@ -12,7 +12,7 @@
 
 Browse, trim, resize, and remove backgrounds from your sprites and assets — all in a single dark-themed app.
 
-[📖 Handbook & Docs](https://YOUR_USERNAME.github.io/2d-asset-toolkit/) · [⬇️ Download](#-quick-start) · [🧠 AI Models](#-ai-models) · [🐛 Report Bug](https://github.com/YOUR_USERNAME/2d-asset-toolkit/issues)
+[📖 Handbook & Docs](https://github.io/AmirhosseinAlimirzaei/2D-Asset-Toolkit/) · [⬇️ Download](#-quick-start) · [🧠 AI Models](#-ai-models) · [🐛 Report Bug](https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit/issues)
 
 ---
 
@@ -162,5 +162,5 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/2d-asset-toolkit.git
+git clone https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit.git
 cd 2d-asset-toolkit
