@@ -16,7 +16,7 @@ Browse, trim, resize, and remove backgrounds from your sprites and assets — al
 
 ---
 
-<img src="images/explorer.png" alt="2D Asset Toolkit — File Explorer" width="800">
+<img src="docs/images/explorer.png" alt="2D Asset Toolkit — File Explorer" width="800">
 
 </div>
 
@@ -43,7 +43,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### 📂 File Explorer
 
 <div align="center">
-<img src="images/explorer.png" alt="File Explorer" width="750">
+<img src="docs/images/explorer.png" alt="File Explorer" width="750">
 </div>
 
 <br>
@@ -61,7 +61,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### ✂️ Smart Image Trimmer
 
 <div align="center">
-<img src="images/trimmer.png" alt="Smart Trimmer" width="750">
+<img src="docs/images/trimmer.png" alt="Smart Trimmer" width="750">
 </div>
 
 <br>
@@ -79,7 +79,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### 📐 Image Resizer
 
 <div align="center">
-<img src="images/resizer.png" alt="Image Resizer" width="750">
+<img src="docs/images/resizer.png" alt="Image Resizer" width="750">
 </div>
 
 <br>
@@ -97,7 +97,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### 🧠 Background Remover
 
 <div align="center">
-<img src="images/bg_remover.png" alt="Background Remover" width="750">
+<img src="docs/images/bg_remover.png" alt="Background Remover" width="750">
 </div>
 
 <br>
@@ -125,7 +125,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 ### ⚙️ Install Manager
 
 <div align="center">
-<img src="images/install.png" alt="Install Manager" width="750">
+<img src="docs/images/install.png" alt="Install Manager" width="750">
 </div>
 
 <br>
@@ -145,8 +145,8 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="images/explorer.png" width="360"><br>**📂 Explorer** | <img src="images/trimmer.png" width="360"><br>**✂️ Trimmer** | <img src="images/resizer.png" width="360"><br>**📐 Resizer** |
-| <img src="images/bg_remover.png" width="360"><br>**🧠 BG Remover** | <img src="images/install.png" width="360"><br>**⚙️ Install** | |
+| <img src="docs/explorer.png" width="360"><br>**📂 Explorer** | <img src="docs/images/trimmer.png" width="360"><br>**✂️ Trimmer** | <img src="docs/images/resizer.png" width="360"><br>**📐 Resizer** |
+| <img src="docs/images/bg_remover.png" width="360"><br>**🧠 BG Remover** | <img src="docs/images/install.png" width="360"><br>**⚙️ Install** | |
 
 </div>
 
