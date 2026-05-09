@@ -145,7 +145,7 @@ No cloud services. No subscriptions. Everything runs locally on your machine.
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="docs/explorer.png" width="360"><br>**📂 Explorer** | <img src="docs/images/trimmer.png" width="360"><br>**✂️ Trimmer** | <img src="docs/images/resizer.png" width="360"><br>**📐 Resizer** |
+| <img src="docs/images/explorer.png" width="360"><br>**📂 Explorer** | <img src="docs/images/trimmer.png" width="360"><br>**✂️ Trimmer** | <img src="docs/images/resizer.png" width="360"><br>**📐 Resizer** |
 | <img src="docs/images/bg_remover.png" width="360"><br>**🧠 BG Remover** | <img src="docs/images/install.png" width="360"><br>**⚙️ Install** | |
 
 </div>
