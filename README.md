@@ -12,7 +12,7 @@
 
 Browse, trim, resize, and remove backgrounds from your sprites and assets — all in a single dark-themed app.
 
-[📖 Handbook & Docs](https://github.io/AmirhosseinAlimirzaei/2D-Asset-Toolkit/) · [⬇️ Download](#-quick-start) · [🧠 AI Models](#-ai-models) · [🐛 Report Bug](https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit/issues)
+[📖 Handbook & Docs](https://amirhosseinalimirzaei.github.io/2D-Asset-Toolkit/) · [⬇️ Download](#-quick-start) · [🧠 AI Models](#-ai-models) · [🐛 Report Bug](https://github.com/AmirhosseinAlimirzaei/2D-Asset-Toolkit/issues)
 
 ---
 
